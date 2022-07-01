@@ -5,7 +5,8 @@ let labels = form.querySelectorAll('label')
 let error = document.querySelector('.error')
 let counter = document.querySelector('.counter')
 let success = document.querySelector('.success')
-
+let loader_bg = document.querySelector('.loader_bg')
+let loader = document.querySelector('.loader')
 
 
 let pattern = {
@@ -72,7 +73,7 @@ form.onsubmit = (event) => {
 }
 
 
-function submit(params) {
+function submit() {
     let user = {}
 
     let fm = new FormData(form)
@@ -81,5 +82,11 @@ function submit(params) {
         user[key] = value
     });
 
+    loader_bg.style.display = "block"
+    loader.style.display = "block"
+    setTimeout(() => {
+        loader_bg.style.display = "none"
+        loader.style.display = "none"
+    }, 1500);
     return user
 }
