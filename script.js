@@ -15,13 +15,23 @@ let pattern = {
     age: /^([1][8-9]|[2-5][0-9]|[6][0-5])$/,
     password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
     email: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-    phone: /^[0-9\-\+]{9,15}$/
+    phone: /^[0-9\-\+]{9,15}$/,
+    css: /^[a-z ,.'-]+$/i
 }
 
 function validate(field, regex) {
     if (regex.test(field.value)) {
         field.classList.add('valid')
         field.classList.remove('invalid')
+
+        let label = field.parentNode.querySelector('label')
+        let img = field.parentNode.querySelector('img')
+        
+        console.log(img);
+
+        label.innerHTML = ""
+        label.style.color = "red"
+        img.style.opacity = "0"
     } else {
         field.classList.add('invalid')
         field.classList.remove('valid')
@@ -47,11 +57,16 @@ form.onsubmit = (event) => {
         if (inp.value.length === 0 || inp.classList.contains("invalid")) {
             arr.push(1)
 
-            let label = inp.nextSibling.nextSibling.nextSibling
+            inp.classList.add('invalid')
+
+            let label = inp.parentNode.querySelector('label')
+            let img = inp.parentNode.querySelector('img')
+            
+            console.log(img);
 
             label.innerHTML = "Plase fll this field"
             label.style.color = "red"
-
+            img.style.opacity = "1"
         }
     }
 
