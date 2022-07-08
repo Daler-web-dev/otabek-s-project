@@ -139,15 +139,18 @@ let cartReaload = (arr, place) => {
     delBtns.forEach(item => {
         item.onclick = () => {
             let id = item.parentNode.id
-            selected = selected.filter(item => item.id !== +id)
-
-            cartReaload(selected, cartPlace)    
-            reload(goods, cont)
+            deleteItem(id)
         }
     })
 
 }
 
+let deleteItem = (id) => {
+    selected = selected.filter(item => item.id !== +id)
+
+    cartReaload(selected, cartPlace)    
+    reload(goods, cont)
+} 
 
 function increment(id) {
     let finded = selected.find(item => item.id === +id)
@@ -158,6 +161,10 @@ function increment(id) {
 function decrement(id) {
     let finded = selected.find(item => item.id === +id)
     finded.count--
+
+    if(finded.count === 0) {
+        deleteItem(id)
+    }
 
     cartReaload(selected, cartPlace)
 }
