@@ -1,65 +1,122 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.box {
-  width: 300px;
-  height: 500px;
-  border: 1px solid #fff;
-  border-radius: 8px;
-
+.card {
+  width: 364px;
+  border: 1px solid #000000;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 }
-.box:hover {
-  border-color: #c4c4c4;
-  box-shadow: 2px 2px 10px black;
-}
-.box img {
+.card .cardTop img {
   width: 100%;
+  max-height: 200px;
+  object-fit: contain;
 }
-.box .imgbox {
+
+.cardTop {
   width: 100%;
-  height: 50%;
+  background-color: #fff;
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
 }
-.imgbox .cart {
-  min-width: 30px;
-  height: 30px;
-  background-color: green;
-  border-radius: 100%;
-  transform: translate(-200%, -50%);
+
+.cardBot {
+  width: 100%;
+  background: #000000;
+  padding: 20px;
 }
-.box .price {
-  display: flex;
-  align-items: flex-end;
+
+.cardBot h2 {
+  font-size: 24px;
+  color: #fff;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.cardBot p {
+  font-size: 12px;
+  color: #fff;
+}
+
+.mark {
+  display: inline-flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.mark span {
+  font-size: 24px;
+  color: #fff;
+}
+
+.price {
   gap: 5px;
 }
-.box span {
-  color: blue;
-  font-size: 32px;
-  text-align: center;
-}
-.price span {
-  font-size: 28px;
-  color: black;
-}
-.price p {
+
+.favBtn {
+  padding: 8px;
+  background: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+
   font-size: 18px;
-  color: #5d5d5d;
 }
 
 
-body {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    width: 90%;
-    margin:  0 auto;
+.container {
+  width: 90%;
+  margin: 50px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.activeBtn {
+  background-color: #1F86FF;
+  color: white;
+  border: none;
+}
+
+.cart {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: min(500px);
+  padding: 10px;
+}
+
+.cart .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 0px 5px #c4c4c4;
+  width: 100%;
+  height: 50px;
+  padding: 20px;
+}
+
+.cart .item .left, .cart .item .right, .right .counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart .item img {
+  width: 100px;
+  height: 50px;
+  object-fit: contain;
 }
