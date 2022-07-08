@@ -51,8 +51,13 @@ function reload(arr, place) {
         count.classList.add('count')
         countImg.src = "./assets/icons/box.png"
         countNum.innerHTML = item.rating.count
+
+        if(selected.includes(item)) {
+            favBtn.classList.add('activeBtn')
+        }
         favBtn.classList.add('favBtn')
         favBtn.innerHTML = "В избранное"
+    
 
         place.append(card)
         card.append(cardTop, cardBot)
@@ -98,14 +103,14 @@ let cartReaload = (arr, place) => {
                     <h3>Price: ${item.price}</h3>
                 </div>
 
-                <div class="right">
+                <div class="right" id="${item.id}" >
                     <div class="counter" id="${item.id}" >
                         <button data-count="inc" >inc</button>
                         <h3>${item.count}</h3>
                         <button data-count="dec" >dec</button>
                     </div>
                     <hr>
-                    <button>delete</button>
+                    <button class="del" >delete</button>
                 </div>
             </div>
 
@@ -126,6 +131,21 @@ let cartReaload = (arr, place) => {
 
         }
     })
+
+    // delete
+
+    let delBtns = document.querySelectorAll('.del')
+
+    delBtns.forEach(item => {
+        item.onclick = () => {
+            let id = item.parentNode.id
+            selected = selected.filter(item => item.id !== +id)
+
+            cartReaload(selected, cartPlace)    
+            reload(goods, cont)
+        }
+    })
+
 }
 
 
