@@ -1,107 +1,160 @@
-let form = document.forms.register
-let inputs = form.querySelectorAll('input')
-let inps = form.querySelectorAll('.important')
-let labels = form.querySelectorAll('label')
-let error = document.querySelector('.error')
-let counter = document.querySelector('.counter')
-let success = document.querySelector('.success')
-let loader_bg = document.querySelector('.loader_bg')
-let loader = document.querySelector('.loader')
+import {goods} from './modules/db.js'
+
+let cont = document.querySelector('.container')
+let showFive = document.querySelector('.showFive')
+let showAll = document.querySelector('.showAll')
+let h1 = document.querySelector('.count')
+let cartPlace = document.querySelector('.cart')
+let selected = []
 
 
-let pattern = {
-    name: /^[a-z ,.'-]+$/i,
-    surname: /^[a-z ,.'-]+$/i,
-    age: /^([1][8-9]|[2-5][0-9]|[6][0-5])$/,
-    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
-    email: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-    phone: /^[0-9\-\+]{9,15}$/,
-    css: /^[a-z ,.'-]+$/i
-}
+function reload(arr, place) {
+    place.innerHTML = ""
 
-function validate(field, regex) {
-    if (regex.test(field.value)) {
-        field.classList.add('valid')
-        field.classList.remove('invalid')
+    for (let item of arr) {
+        let card = document.createElement('div')
 
-        let label = field.parentNode.querySelector('label')
-        let img = field.parentNode.querySelector('img')
-        
-        console.log(img);
+        let cardTop = document.createElement('div')
+        let img = document.createElement('img')
 
-        label.innerHTML = ""
-        label.style.color = "red"
-        img.style.opacity = "0"
-    } else {
-        field.classList.add('invalid')
-        field.classList.remove('valid')
-    }
-}
+        let cardBot = document.createElement('div')
+        let h2 = document.createElement('h2')
+        let descr = document.createElement('p')
 
-inputs.forEach(inp => {
-    inp.onkeyup = () => {
-        let key = inp.name
+        let mark = document.createElement('div')
+        let price = document.createElement('div')
+        let priceImg = document.createElement('img')
+        let priceNum = document.createElement('span')
+        let fav = document.createElement('div')
+        let favImg = document.createElement('img')
+        let favNum = document.createElement('span')
+        let count = document.createElement('div')
+        let countImg = document.createElement('img')
+        let countNum = document.createElement('span')
 
-        validate(inp, pattern[key])
-    }
-});
+        let favBtn = document.createElement('button')
 
 
-form.onsubmit = (event) => {
-    event.preventDefault()
-    labels.forEach(item => item.innerHTML = "")
+        card.classList.add('card')
+        cardTop.classList.add('cardTop')
+        img.src = item.image
+        cardBot.classList.add('cardBot')
+        h2.innerHTML = item.category
+        descr.innerHTML = item.description.slice(0,150)
+        mark.classList.add('mark')
+        price.classList.add('price')
+        priceImg.src = "./assets/icons/dolar.png"
+        priceNum.innerHTML = item.price
+        fav.classList.add('fav')
+        favImg.src = "./assets/icons/fav.svg"
+        favNum.innerHTML = item.rating.rate
+        count.classList.add('count')
+        countImg.src = "./assets/icons/box.png"
+        countNum.innerHTML = item.rating.count
+        favBtn.classList.add('favBtn')
+        favBtn.innerHTML = "В избранное"
 
-    let arr = []
+        place.append(card)
+        card.append(cardTop, cardBot)
+        cardTop.append(img)
+        cardBot.append(h2, descr, mark, favBtn)
+        mark.append(price, fav, count)
+        price.append(priceImg, priceNum)
+        fav.append(favImg, favNum)
+        count.append(countImg, countNum)
 
-    for (let inp of inps) {
-        if (inp.value.length === 0 || inp.classList.contains("invalid")) {
-            arr.push(1)
-
-            inp.classList.add('invalid')
-
-            let label = inp.parentNode.querySelector('label')
-            let img = inp.parentNode.querySelector('img')
+        // functions
+        favBtn.onclick = () => {
             
-            console.log(img);
+            if(!selected.includes(item)) {
+                favBtn.classList.add('activeBtn')
+                item.count = 1
+                selected.push(item)
 
-            label.innerHTML = "Plase fll this field"
-            label.style.color = "red"
-            img.style.opacity = "1"
+
+                cartReaload(selected, cartPlace)
+
+
+                h1.innerHTML = `В корзине: ${selected.length} товаров`
+
+            }
+
         }
+
+
     }
-
-
-    error.innerHTML = `Error: ${arr.length}/8`
-    success.innerHTML = `Success: ${8 - arr.length}/12`
-    
-    if (arr.length === 0) {
-        console.log(submit());
-    } else {
-        counter.style.background = "red"
-        counter.style.color = "white"
-        setTimeout(() => {
-            counter.style.background = "transparent"
-            counter.style.color = "black"
-        }, 1000);
-    }
-
 }
 
 
-function submit() {
-    let user = {}
+let cartReaload = (arr, place) => {
+    place.innerHTML = ""
 
-    let fm = new FormData(form)
+    for(let item of arr) {
+        place.innerHTML += `
+            <div class="item">
+                <div class="left">
+                    <img src="${item.image}" alt="">
+                    <h3>category: ${item.category}</h3>
+                    <h3>Price: ${item.price}</h3>
+                </div>
 
-    fm.forEach((value, key) => {
-        user[key] = value
-    });
+                <div class="right">
+                    <div class="counter" id="${item.id}" >
+                        <button data-count="inc" >inc</button>
+                        <h3>${item.count}</h3>
+                        <button data-count="dec" >dec</button>
+                    </div>
+                    <hr>
+                    <button>delete</button>
+                </div>
+            </div>
 
-    loader_bg.style.display = "block"
-    loader.style.display = "block"
-    setTimeout(() => {
-        loader_bg.style.display = "none"
-        loader.style.display = "none"
-    }, 1500);
-    return user
+        `
+        
+    }
+
+
+    let counterBtns = document.querySelectorAll('button[data-count]')
+
+    counterBtns.forEach(elem => {
+        elem.onclick = () => {
+            let key = elem.getAttribute('data-count')
+            let id = elem.parentNode.id
+
+            if(key === 'inc') increment(id)
+            else decrement(id)
+
+        }
+    })
 }
+
+
+function increment(id) {
+    let finded = selected.find(item => item.id === +id)
+    finded.count++
+
+    cartReaload(selected, cartPlace)
+}
+function decrement(id) {
+    let finded = selected.find(item => item.id === +id)
+    finded.count--
+
+    cartReaload(selected, cartPlace)
+}
+
+reload(goods,cont)
+
+
+showFive.onclick = () => {
+    let sliced = goods.slice(0,5)
+
+    console.log(sliced);
+
+    reload(sliced, cont)
+}
+
+showAll.onclick = () => {
+    reload(goods, cont)
+}
+
+
